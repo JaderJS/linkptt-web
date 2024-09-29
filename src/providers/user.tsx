@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         refetchOnReconnect: true,
     })
 
+
     const register = async (data: registerUserSchemaType) => {
         registerUser(data).then(() => {
             push(`/`)

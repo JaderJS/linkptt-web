@@ -10,6 +10,11 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
+			linkptt:{
+				DEFAULT:'hsl(var(--primary-linkptt))',
+				secondary:'hsl(var(--secondary-linkptt))',
+				third:'hsl(var(--third-linkptt))'
+			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse, AxiosError, isAxiosError, } from 'axios'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { api } from './functions/axios'
@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get('linkptt-web')
     const pathname = request.nextUrl.pathname
     const isPublic = checkIsPublicRoute(pathname)
-    
+
     if (isPublic) {
         return NextResponse.next()
     }
@@ -29,10 +29,17 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
     try {
-        const user = await api.get<ResponseUser>(`/user`, { headers: { Authorization: `Bearer ${token?.value}` } })
+        const user = await api.get<ResponseUser>(`/user`, { headers: { Authorization: `Bearer ${token?.value}` } }).catch((error) => error)
         return NextResponse.next()
-    } catch (error: any) {
-        console.error(error.message)
+    } catch (error: unknown) {
+        if (isAxiosError(error)) {
+            if (error?.response) {
+                console.error('NETWORK ERROR')
+                return NextResponse.redirect(new URL('/login', request.url))
+
+            }
+            console.error(error?.message)
+        }
         return NextResponse.redirect(new URL('/login', request.url))
     }
 

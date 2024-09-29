@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-br" suppressHydrationWarning>
-      <body className="h-screen flex flex-col">
+      <body className="h-screen flex flex-col" >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -33,7 +33,6 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
           <Provider>
             {children}
           </Provider>
-
         </ThemeProvider>
       </body>
     </html>

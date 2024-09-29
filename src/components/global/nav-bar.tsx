@@ -1,4 +1,4 @@
-import { CheckCircle, MenuIcon, MountainIcon } from "lucide-react"
+import { CheckCircle, MenuIcon, MountainIcon, X } from "lucide-react"
 import { Button } from "../ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "../ui/sheet"
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarItem, MenubarContent, MenubarSeparator } from "../ui/menubar"
@@ -6,12 +6,18 @@ import Link from "next/link"
 import { useAuth } from "@/providers/user"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { useRouter } from "next/navigation"
+import { useSocket } from "@/providers/socket"
+import { useReceiver } from "@/providers/receiver"
+import { Notification } from "./notification"
+import { ModeToggle } from "./toggle-theme"
 
 
 export const NavBar = () => {
 
     const { user, logout } = useAuth()
     const { push } = useRouter()
+    const { enable } = useReceiver()
+    const { isConnected } = useSocket()
 
     return (
 
@@ -45,16 +51,30 @@ export const NavBar = () => {
             </Link>
             <nav className="ml-auto hidden lg:flex gap-6 items-center">
                 <div className="flex bg-transparent">
-                    <CheckCircle className="text-emerald-500" />
-                    <p className="px-2 text-emerald-500">Online</p>
+                    {/* {isConnected && <>
+                        <CheckCircle className="text-emerald-500" />
+                        <p className="px-2 text-emerald-500">Online</p>
+                    </>} */}
+                    {!isConnected && <>
+                        <X className="text-red-500" />
+                        <p className="px-2 text-red-500">Offline</p>
+                    </>}
                 </div>
+                <div className="flex bg-transparent">
+                    {!enable && <>
+                        <CheckCircle className="text-yellow-500" />
+                        <p className="px-2 text-yellow-500">Unauthorize</p>
+                    </>}
+                </div>
+                <ModeToggle/>
+                <Notification/>
 
-                <Link
+                {/* <Link
                     href="/dashboard/channels"
                     prefetch={true}
                 >
                     <Button>Canais</Button>
-                </Link>
+                </Link> */}
 
 
 
