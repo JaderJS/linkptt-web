@@ -1,4 +1,4 @@
-import { string } from "zod"
+import { boolean, string } from "zod"
 import { api } from "./axios"
 
 
@@ -37,7 +37,7 @@ export interface ToChannel {
 }
 
 
-interface ResponseGetMyMessages {
+export interface ResponseGetMyMessages {
     msg: string
     channel: {
         messages: MessageProps[]
@@ -55,7 +55,7 @@ interface ResponseGetChannel {
     users: any
 }
 
-interface Channel {
+export interface Channel {
     cuid: string
     name: string
     profileUrl: string
@@ -65,6 +65,7 @@ interface Channel {
     updatedAt: string
     owner: Owner
     usersToChannels: UsersToChannel[]
+    isMyChannel?: boolean
 }
 interface MyLocation {
     id: number
@@ -98,7 +99,67 @@ interface Owner {
     role: string
 }
 
+
+export interface UserGetChannel extends User {
+    isOwner: boolean
+    isOnline: boolean
+}
+interface RespGetChannel_ {
+    channel: Channel
+    users: UserGetChannel[]
+    _count: {
+        onlineUsers: number
+    }
+}
+
+export const getChannel_ = async (channelCuid: string) => {
+    const resp = await api.get<RespGetChannel_>(`/channel_/${channelCuid}`)
+    return resp.data
+}
+
 export const getChannel = async (channelCuid: string) => {
     const resp = await api.get<ResponseGetChannel>(`/channel/${channelCuid}`)
+    return resp.data
+}
+
+interface RespCreateOneChannel {
+    msg: string
+    channel: {
+        cuid: string
+        name: string
+        profileUrl: string
+        ownerCuid: string
+        createdAt: Date
+        updatedAt: Date
+    }
+}
+
+interface CreateOneChannelProps {
+    name: string
+    profileUrl: string
+}
+
+export const createOneChannel = async (body: CreateOneChannelProps) => {
+    const resp = await api.post<RespCreateOneChannel>(`/channel`, body)
+    return resp.data
+}
+
+interface RespTopChannels {
+    channels: (Channel & { usersInChannel: number })[]
+}
+
+export const topChannels = async () => {
+    const resp = await api.get<RespTopChannels>(`/channels/top`)
+    return resp.data
+}
+
+interface BodyBindUserToChannel {
+    userCuid: string
+    channelCuid: string
+    password: string
+}
+
+export const bindUserToChannel = async (body: BodyBindUserToChannel) => {
+    const resp = await api.post(`/channel/bind`, body)
     return resp.data
 }

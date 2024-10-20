@@ -1,9 +1,11 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { LucideIcon, LucideProps } from "lucide-react"
+import { Button } from "./button"
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> { }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
@@ -22,4 +24,24 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-export { Input }
+interface InputWithSVGProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string
+  icon: LucideIcon
+  children?: React.ReactNode
+}
+
+const InputWithSVG = React.forwardRef<HTMLInputElement, InputWithSVGProps>(
+  ({ className, type, label, icon: Icon, children, ...props }, ref) => (
+    <div className={cn(className, "flex gap-x-2 group transition-all")}>
+      <div className="relative flex w-full ">
+        <Input type={type} ref={ref} {...props} className="pl-10 group-focus-within:pl-2 duration-300 ease-out" placeholder={label} />
+        <Icon className="absolute top-2 left-2 my-auto text-muted-foreground group-focus-within:hidden duration-300 ease-out" />
+      </div>
+      {children}
+    </div>
+  )
+)
+
+InputWithSVG.displayName = "InputWithSVG"
+
+export { Input, InputWithSVG }

@@ -6,11 +6,11 @@
   :root {
 
     /* #009300 */
-    --primary-linkptt: 120, 100%, 29%;
+    --primary-linkptt: 120 100% 29%;
     /* #f58611 */
-    --secondary-linkptt: 31, 92%, 51%;
+    --secondary-linkptt: 31 92% 51%;
     /* #010d24 */
-    --third-linkptt: 219, 95%, 7%;
+    --third-linkptt: 219 95% 7%;
 
     --background: 0 0% 100%;
     --foreground: 222.2 47.4% 11.2%;

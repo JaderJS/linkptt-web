@@ -37,64 +37,68 @@ export default function Register() {
     })
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="text-2xl font-bold tracking-tighter">Nova conta</CardTitle>
-                <CardDescription>Crie uma conta novinha em folha e saia falando pelos cotovelos</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="flex items-center">
-                    <ImageUploader src={form.watch('avatarUrl')} onUpdate={(pathUrl) => form.setValue('avatarUrl', pathUrl)} />
-                </div>
-                <Form {...form}>
-                    <form className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormDescription>Adicione seu melhor email</FormDescription>
-                                    <FormControl>
-                                        <Input {...field} placeholder="exemplo@email.com" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Nome</FormLabel>
-                                    <FormDescription>Como deseja ser chamado?</FormDescription>
-                                    <FormControl>
-                                        <Input {...field} placeholder="senha" type="password" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Senha</FormLabel>
-                                    <FormDescription>Fique tranquilo a gente não fala para ninguém</FormDescription>
-                                    <FormControl>
-                                        <Input {...field} placeholder="senha" type="password" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </form>
-                </Form>
-                <Button onClick={form.handleSubmit(register)} className="mt-6 w-full">Entrar</Button>
+        <main className="flex-1 p-12">
 
-            </CardContent>
-        </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-2xl font-bold tracking-tighter">Nova conta</CardTitle>
+                    <CardDescription>Crie uma conta novinha em folha e saia falando pelos cotovelos</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center">
+                        <ImageUploader src={form.watch('avatarUrl')} onUpdate={(pathUrl) => form.setValue('avatarUrl', pathUrl)} />
+                    </div>
+                    <Form {...form}>
+                        <form className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormDescription>Adicione seu melhor email</FormDescription>
+                                        <FormControl>
+                                            <Input {...field} placeholder="exemplo@email.com" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Nome</FormLabel>
+                                        <FormDescription>Como deseja ser chamado?</FormDescription>
+                                        <FormControl>
+                                            <Input {...field} placeholder="Fulano de tal" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Senha</FormLabel>
+                                        <FormDescription>Fique tranquilo a gente não fala para ninguém</FormDescription>
+                                        <FormControl>
+                                            <Input {...field} placeholder="senha" type="password" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </form>
+                    </Form>
+                    <Button onClick={form.handleSubmit(register)} className="mt-6 w-full">Entrar</Button>
+
+                </CardContent>
+            </Card>
+        </main>
+
     )
 }

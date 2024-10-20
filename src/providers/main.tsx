@@ -5,14 +5,17 @@ import { ReactNode, useState } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { AuthProvider, useAuth } from "./user"
 import { NavBar } from "@/components/global/nav-bar"
-import { ThemeProvider } from "./theme"
 import { SocketProvider } from "./socket"
 import { ReceiverProvider, useReceiver } from "./receiver"
 import { TransmitterProvider } from "./transmiter"
 import Screen from "./screen"
+import { usePathname } from "next/navigation"
+import { checkIsPublicRoute } from "@/functions/global"
 
 export default function Provider({ children }: { children: ReactNode }) {
     const [queryClient] = useState(() => new QueryClient())
+    const pathname = usePathname()
+    const isVisibleNavBar = checkIsPublicRoute(pathname)
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -21,7 +24,7 @@ export default function Provider({ children }: { children: ReactNode }) {
                     <ReceiverProvider>
                         <TransmitterProvider>
                             <Toaster />
-                            <NavBar />
+                            {!isVisibleNavBar ? <NavBar /> : null}
                             <Screen>{children}</Screen>
                         </TransmitterProvider>
                     </ReceiverProvider>

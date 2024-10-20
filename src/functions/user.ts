@@ -1,4 +1,5 @@
 import { api } from "./axios"
+import { Channel } from "./channel"
 
 
 interface ResponseGetUser {
@@ -45,14 +46,7 @@ export interface UserToChannels {
     userCuid: string
     channelCuid: string
     permission: string
-    channel: {
-        cuid: string
-        name: string
-        profileUrl: string
-        ownerCuid: string
-        createdAt: Date
-        updatedAt: Date
-    }
+    channel: Channel
 }
 
 interface MyChannels {
@@ -95,6 +89,7 @@ interface ResponseGetMyHome {
     myChannels: MyChannels[]
     myReceivedMessages: MyReceivedMessages[]
     mySendMessages: MySendMessages[]
+    myNotification: any
 }
 
 export const getMyHome = async () => {

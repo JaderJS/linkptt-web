@@ -1,4 +1,4 @@
-import { CheckCircle, MenuIcon, MountainIcon, X } from "lucide-react"
+import { Check, CheckCircle, MenuIcon, MountainIcon, X } from "lucide-react"
 import { Button } from "../ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "../ui/sheet"
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarItem, MenubarContent, MenubarSeparator } from "../ui/menubar"
@@ -8,20 +8,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { useRouter } from "next/navigation"
 import { useSocket } from "@/providers/socket"
 import { useReceiver } from "@/providers/receiver"
-import { Notification } from "./notification"
 import { ModeToggle } from "./toggle-theme"
+import { NotificationRoot } from "./notification/notification.root"
+import { NotificationContent } from "./notification/notification.content"
+import { NotificationIcon } from "./notification/notification.icon"
+import { NotificationActions } from "./notification/notification.actions"
+import { NotificationAction } from "./notification/notification.action"
+import { NotificationRow } from "./notification/notification.row"
 
 
 export const NavBar = () => {
 
     const { user, logout } = useAuth()
+
     const { push } = useRouter()
     const { enable } = useReceiver()
     const { isConnected } = useSocket()
 
     return (
 
-        <header className="flex h-24  w-full shrink-0 items-center px-4 md:px-6">
+        <header className="flex h-24  w-full shrink-0 items-center px-4 md:px-8">
             <Sheet>
                 <SheetTitle></SheetTitle>
                 <SheetDescription></SheetDescription>
@@ -44,8 +50,8 @@ export const NavBar = () => {
                     </div>
                 </SheetContent>
             </Sheet>
-            <Link href="#" className="mr-6 hidden lg:flex" prefetch={false}>
-                <MountainIcon className="h-6 w-6" />
+            <Link href="/" className="mr-6 hidden lg:flex" prefetch={false}>
+                <MountainIcon className="ml-12 h-6 w-6" />
                 {/* <Image src={logo} alt="logo" className="h-12 w-12" /> */}
                 <span className="sr-only">Acme Inc</span>
             </Link>
@@ -66,16 +72,9 @@ export const NavBar = () => {
                         <p className="px-2 text-yellow-500">Unauthorize</p>
                     </>}
                 </div>
-                <ModeToggle/>
-                <Notification/>
+                <ModeToggle />
 
-                {/* <Link
-                    href="/dashboard/channels"
-                    prefetch={true}
-                >
-                    <Button>Canais</Button>
-                </Link> */}
-
+                <NotificationRoot/>
 
 
                 <Menubar className="border-0">
@@ -86,8 +85,14 @@ export const NavBar = () => {
                                 <AvatarImage src={user?.avatarUrl} />
                             </Avatar>
                         </MenubarTrigger>
-                        <MenubarContent>
-                            <MenubarItem onClick={() => push('/perfil')}>Meu perfil</MenubarItem>
+                        <MenubarContent className="mr-3">
+                            <MenubarItem>
+                                <p>
+                                    <span className="font-bold">{user?.name}</span> | <span>{user?.email}</span>
+                                </p>
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            <MenubarItem onClick={() => push('/profile')}>Meu perfil</MenubarItem>
                             <MenubarSeparator />
                             <MenubarItem onClick={() => logout()}> Logout</MenubarItem>
                         </MenubarContent>

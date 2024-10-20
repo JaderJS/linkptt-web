@@ -4,7 +4,7 @@ import { registerUserSchemaType } from "@/app/register/page"
 import { api } from "@/functions/axios"
 import { getUser, loginUser, registerUser } from "@/functions/user"
 import { useQuery } from "@tanstack/react-query"
-import { getCookie, setCookie } from "cookies-next"
+import { deleteCookie, getCookie, setCookie } from "cookies-next"
 import { useRouter } from "next/navigation"
 import { createContext, ReactNode, useContext, useState } from "react"
 
@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data: user } = useQuery({
         queryKey: ['user'],
         queryFn: getUser,
+        enabled: !!getCookie('linkptt-web'),
         refetchOnReconnect: true,
     })
 
@@ -51,6 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const { user } = await loginUser(data)
             const { token, ...user_ } = user
             setCookie(`linkptt-web`, token)
+            push('/')
             return user
 
         } catch (error) {
@@ -60,7 +62,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     }
 
-    const logout = () => { }
+    const logout = () => {
+        deleteCookie('linkptt-web')
+        push('/login')
+    }
 
     return (
         <AuthContext.Provider value={{ isAuth: !!user, login, logout, register, user: user?.user }}>

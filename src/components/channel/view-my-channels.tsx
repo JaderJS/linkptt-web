@@ -6,14 +6,13 @@ import { Button } from "../ui/button"
 import { CircleCheck, CircleDot, Plus, PlusCircle } from "lucide-react"
 
 export const ViewMyChannelsComponent = ({ myChannels }: { myChannels: UserToChannels[] }) => {
+
     const isOnline = true
+
     return (
         <>
             <div className="flex flex-col space-y-4 px-8">
-                <Button className="w-full h-12 text-2xl font-mono font-bold" size="icon">
-                    <PlusCircle />
-                </Button>
-                {myChannels.map(({ channel }) => (
+                {myChannels?.map(({ channel }) => (
                     <Link href={`/channel/${channel.cuid}`} key={channel.cuid} >
                         <Card>
                             <CardHeader >
@@ -35,6 +34,7 @@ export const ViewMyChannelsComponent = ({ myChannels }: { myChannels: UserToChan
                         </Card>
                     </Link>
                 ))}
+                {myChannels.length === 0 && <p>Nenhum canal atribuído</p>}
             </div>
         </>
     )
