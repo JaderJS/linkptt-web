@@ -11,6 +11,7 @@ import { TransmitterProvider } from "./transmiter"
 import Screen from "./screen"
 import { usePathname } from "next/navigation"
 import { checkIsPublicRoute } from "@/functions/global"
+import { MessageProvider } from "./messager"
 
 export default function Provider({ children }: { children: ReactNode }) {
     const [queryClient] = useState(() => new QueryClient())
@@ -23,9 +24,11 @@ export default function Provider({ children }: { children: ReactNode }) {
                 <SocketProvider>
                     <ReceiverProvider>
                         <TransmitterProvider>
-                            <Toaster />
-                            {!isVisibleNavBar ? <NavBar /> : null}
-                            <Screen>{children}</Screen>
+                            <MessageProvider>
+                                <Toaster />
+                                {!isVisibleNavBar ? <NavBar /> : null}
+                                <Screen>{children}</Screen>
+                            </MessageProvider>
                         </TransmitterProvider>
                     </ReceiverProvider>
                 </SocketProvider>

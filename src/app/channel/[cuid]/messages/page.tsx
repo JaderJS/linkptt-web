@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { getChannel, getMyMessages, ResponseGetMyMessages } from "@/functions/channel"
+import { getAllMessagesByChannel, getChannel, ResponseGetMyMessages } from "@/functions/channel"
 import { useAuth } from "@/providers/user"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { formatDistanceToNow as toNow } from 'date-fns'
@@ -16,16 +16,19 @@ import { Input } from "@/components/ui/input"
 import { useTransmitter } from "@/providers/transmiter"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { useMessage } from "@/providers/messager"
 
 
 export default function Messages({ params }: { params: { cuid: string } }) {
     const { user } = useAuth()
-    const { sendMessage } = useTransmitter()
+    const { sendMessage } = useMessage()
     const { data, refetch } = useQuery({
         queryKey: ['messages', params.cuid],
-        queryFn: () => getMyMessages(params.cuid),
+        queryFn: () => getAllMessagesByChannel(params.cuid),
         staleTime: 0,
     })
+
+    console.log(data)
 
     const form = useForm<{ text: string }>()
 
@@ -44,7 +47,7 @@ export default function Messages({ params }: { params: { cuid: string } }) {
             <main className="flex-1 flex flex-col gap-12">
                 <Separator />
                 <ScrollArea className="h-[620px] flex rounded-md border">
-                    {data?.channel.messages.map((msg) => (
+                    {data?.messages.map((msg) => (
                         <div
                             key={msg.id}
                             className={`flex items-center gap-x-4 px-12 py-2 w-[600px] ${user?.cuid === msg.from.cuid ? 'ml-auto text-right justify-end' : 'mr-auto text-left justify-start '}`}

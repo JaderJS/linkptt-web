@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.10",
+    "@ffmpeg/util": "^0.12.1",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-avatar": "^1.1.0",
@@ -33,6 +35,7 @@
     "extendable-media-recorder": "^9.2.11",
     "extendable-media-recorder-wav-encoder": "^7.0.115",
     "lucide-react": "^0.441.0",
+    "mp3-mediarecorder": "^4.0.5",
     "mpg123-decoder": "^1.0.0",
     "next": "14.2.11",
     "next-themes": "^0.3.0",
@@ -43,6 +46,7 @@
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "workerize-loader": "^2.0.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {

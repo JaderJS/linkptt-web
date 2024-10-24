@@ -13,6 +13,7 @@ interface ReceiverProps {
     enable: boolean
     latency: number
 }
+
 interface NotificationProps {
     msg: string
     user: {
@@ -48,6 +49,8 @@ export const ReceiverProvider = ({ children }: { children: ReactNode }) => {
     }
 
     useEffect(() => {
+
+        decoderRef.current = new MPEGDecoderWebWorker()
 
         socket?.on('status', ({ msg }: { msg: string }) => {
             toast(msg)
@@ -100,8 +103,9 @@ export const ReceiverProvider = ({ children }: { children: ReactNode }) => {
             })
         }, 10000)
 
-        if (!enable)
+        if (!enable) {
             return
+        }
 
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)
 

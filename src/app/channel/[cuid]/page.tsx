@@ -17,7 +17,7 @@ import { useState } from "react"
 export default function Channel({ params }: { params: { cuid: string } }) {
     const { user } = useAuth()
     const [status, setStatus] = useState<'idle' | 'transmitting' | 'receiving'>('idle')
-    const { isReceiving, message, timer, touchScreen, latency, notification } = useReceiver()
+    const { isReceiving, timer, touchScreen, latency, notification } = useReceiver()
     const { start, stop } = useTransmitter()
 
     // const { data: channel } = useQuery({ queryKey: ['channel', params.cuid], queryFn: () => getChannel(params.cuid) })

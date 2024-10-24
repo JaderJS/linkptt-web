@@ -30,6 +30,11 @@ interface Message {
     text: string
     fromCuid: string
     toChannelCuid: any
+    toChannel: {
+        cuid: string
+        name: string
+        profileUrl: string
+    }
     toUserCuid: any
     createdAt: string
 }
@@ -40,12 +45,18 @@ const getAllNotification = async (body: BodyGetAllNotificationProps) => {
     return resp.data
 }
 
-const readOneNotification = async (id: number) => { 
+const readOneNotification = async (id: number) => {
     const resp = await api.patch<RespGetAllNotification>(`/notification/${id}`)
+    return resp.data
+}
+
+const readAllNotification = async () => {
+    const resp = await api.patch(`/notifications`)
     return resp.data
 }
 
 export {
     getAllNotification,
     readOneNotification,
+    readAllNotification
 }

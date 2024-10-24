@@ -39,12 +39,10 @@ export interface ToChannel {
 
 export interface ResponseGetMyMessages {
     msg: string
-    channel: {
-        messages: MessageProps[]
-    }
+    messages: MessageProps[]
 }
 
-export const getMyMessages = async (channelCuid: string) => {
+export const getAllMessagesByChannel = async (channelCuid: string) => {
     const resp = await api.get<ResponseGetMyMessages>(`/channel/${channelCuid}/messages`)
     return resp.data
 }

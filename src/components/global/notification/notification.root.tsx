@@ -11,15 +11,16 @@ import { NotificationActions } from "./notification.actions"
 import { NotificationAction } from "./notification.action"
 import { NotificationIcon } from "./notification.icon"
 import { Separator } from "@/components/ui/separator"
-import { getAllNotification, readOneNotification } from "@/functions/notification"
+import { getAllNotification, readAllNotification, readOneNotification } from "@/functions/notification"
 import { Button } from "@/components/ui/button"
 
 export const NotificationRoot = () => {
 
-    const { data } = useQuery({ queryKey: ['channels'], queryFn: () => getAllNotification({ page: 1, limit: 3 }) })
-    const { mutate: readOneNotificationFn } = useMutation({ mutationFn: readOneNotification })
+    const { data, refetch } = useQuery({ queryKey: ['channels'], queryFn: () => getAllNotification({ page: 1, limit: 5 }) })
+    const { mutate: readOneNotificationFn } = useMutation({ mutationFn: readOneNotification, onSuccess: () => refetch() })
+    const { mutate: readAllNotificationFn } = useMutation({ mutationFn: readAllNotification, onSuccess: () => refetch() })
 
-
+    console.log(data)
     return (
         <Popover>
             <PopoverTrigger>
@@ -31,15 +32,21 @@ export const NotificationRoot = () => {
             <PopoverContent className="mr-12 flex flex-col gap-3 w-96">
                 {data?.notifications.map((notification) => (
                     <NotificationRow key={notification.id}>
-                        <NotificationIcon icon={MountainIcon} />
-                        <NotificationContent text={notification.message.transcript} date={notification.createdAt} />
+                        <NotificationIcon icon={MountainIcon} src={notification.message.toChannel.profileUrl} />
+                        <NotificationContent text={notification.message.text || notification.message.toChannel.name} date={notification.createdAt} />
                         <NotificationActions>
                             <NotificationAction icon={Check} onClick={() => readOneNotificationFn(notification.id)} />
                         </NotificationActions>
                     </NotificationRow>
                 ))}
-                <Separator />
-                <Button variant="link">Ler todos?</Button>
+
+                {data?.notifications.length === 0 && <>
+                    <p className="text-center">Nenhuma notificação</p>
+                </>}
+                {(data?.notifications.length ?? 0) > 0 && <>
+                    <Separator />
+                    <Button className="text-xs" variant="link" onClick={() => readAllNotificationFn()}>Ler todos?</Button>
+                </>}
 
             </PopoverContent>
         </Popover>
